@@ -1,0 +1,480 @@
+
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Voting OSIS - SMA Negeri 1</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#1d4ed8', // blue-700
+                        secondary: '#3b82f6', // blue-500
+                        dark: '#1e293b', // slate-800
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Modal Animation */
+        .modal-enter { animation: fadeIn 0.2s ease-out forwards; }
+        .modal-leave { animation: fadeOut 0.2s ease-in forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.95); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center font-bold text-xl">
+                        <i class="fa-solid fa-check-to-slot"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight text-dark">Pemilu OSIS</h1>
+                        <p class="text-xs text-slate-500">SMA Negeri 1 - 2026/2027</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="#beranda" class="text-slate-600 hover:text-primary font-medium transition">Beranda</a>
+                    <a href="#kandidat" class="text-slate-600 hover:text-primary font-medium transition">Kandidat</a>
+                    <a href="#panduan" class="text-slate-600 hover:text-primary font-medium transition">Panduan</a>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-semibold">Budi Siswa</p>
+                        <p class="text-xs text-slate-500">NIS: 12345678</p>
+                    </div>
+                    <div class="w-9 h-9 rounded-full bg-slate-200 border-2 border-primary overflow-hidden">
+                        <img src="https://ui-avatars.com/api/?name=Budi+Siswa&background=e2e8f0&color=1e293b" alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        
+        <!-- Hero Section -->
+        <section id="beranda" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+            <div class="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
+                <!-- Background Pattern -->
+                <div class="absolute top-0 right-0 opacity-10">
+                    <i class="fa-solid fa-fingerprint text-[15rem] -mt-10 -mr-10"></i>
+                </div>
+                
+                <div class="relative z-10 max-w-2xl">
+                    <span class="inline-block py-1 px-3 rounded-full bg-white/20 text-sm font-medium backdrop-blur-sm mb-4 border border-white/30">
+                        <i class="fa-solid fa-clock mr-1"></i> Pemilihan sedang berlangsung
+                    </span>
+                    <h2 class="text-3xl md:text-5xl font-bold mb-4 leading-tight">Tentukan Masa Depan Sekolah Kita!</h2>
+                    <p class="text-blue-100 text-lg mb-8 max-w-xl">
+                        Gunakan hak suaramu untuk memilih Ketua dan Wakil Ketua OSIS periode 2026/2027. Satu suara dari kamu sangat berarti untuk kemajuan bersama.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#kandidat" class="bg-white text-primary hover:bg-slate-50 px-6 py-3 rounded-lg font-semibold shadow-md transition flex items-center gap-2">
+                            Mulai Memilih <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <button onclick="scrollToPanduan()" class="bg-primary-dark border border-white/30 hover:bg-white/10 px-6 py-3 rounded-lg font-medium transition flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info"></i> Cara Memilih
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panduan Singkat -->
+        <section id="panduan" class="bg-white py-12 border-y border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h3 class="text-2xl font-bold text-dark">Langkah Mudah Memilih</h3>
+                    <p class="text-slate-500 mt-2">Ikuti 3 langkah sederhana ini untuk memberikan suaramu</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Step 1 -->
+                    <div class="text-center p-6 rounded-xl bg-slate-50 border border-slate-100 hover:shadow-md transition">
+                        <div class="w-16 h-16 mx-auto bg-blue-100 text-primary rounded-full flex items-center justify-center text-2xl mb-4">
+                            <i class="fa-solid fa-users-viewfinder"></i>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2">1. Kenali Kandidat</h4>
+                        <p class="text-slate-500 text-sm">Pelajari profil, visi, misi, dan program kerja dari masing-masing pasangan calon.</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="text-center p-6 rounded-xl bg-slate-50 border border-slate-100 hover:shadow-md transition">
+                        <div class="w-16 h-16 mx-auto bg-blue-100 text-primary rounded-full flex items-center justify-center text-2xl mb-4">
+                            <i class="fa-solid fa-hand-pointer"></i>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2">2. Tentukan Pilihan</h4>
+                        <p class="text-slate-500 text-sm">Klik tombol "Pilih Paslon" pada kandidat yang kamu yakini bisa membawa perubahan.</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="text-center p-6 rounded-xl bg-slate-50 border border-slate-100 hover:shadow-md transition">
+                        <div class="w-16 h-16 mx-auto bg-blue-100 text-primary rounded-full flex items-center justify-center text-2xl mb-4">
+                            <i class="fa-solid fa-check-double"></i>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2">3. Konfirmasi Suara</h4>
+                        <p class="text-slate-500 text-sm">Pastikan pilihanmu sudah benar, lalu konfirmasi. Suaramu bersifat rahasia dan final.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kandidat Section -->
+        <section id="kandidat" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h3 class="text-3xl font-bold text-dark">Daftar Kandidat</h3>
+                    <p class="text-slate-500 mt-2">Calon Ketua & Wakil Ketua OSIS 2026/2027</p>
+                </div>
+                <div class="hidden sm:block text-sm font-medium px-4 py-2 bg-blue-50 text-primary rounded-lg border border-blue-100">
+                    <i class="fa-solid fa-user-check mr-1"></i> Status: Belum Memilih
+                </div>
+            </div>
+
+            <!-- Kandidat Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Card Paslon 1 -->
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-slate-200 overflow-hidden transition-all duration-300 group">
+                    <div class="bg-slate-100 p-6 flex justify-center items-center gap-4 relative">
+                        <div class="absolute top-4 left-4 bg-white/80 backdrop-blur text-dark font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-sm border border-slate-200">
+                            01
+                        </div>
+                        <img src="https://ui-avatars.com/api/?name=Andi+Pratama&background=3b82f6&color=fff&size=128" alt="Ketua" class="w-24 h-24 rounded-full border-4 border-white shadow-md z-10 -mr-4 group-hover:scale-105 transition">
+                        <img src="https://ui-avatars.com/api/?name=Siti+Nurhaliza&background=10b981&color=fff&size=128" alt="Wakil" class="w-24 h-24 rounded-full border-4 border-white shadow-md z-0 group-hover:scale-105 transition">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-center mb-4">
+                            <h4 class="font-bold text-xl text-dark">Andi Pratama</h4>
+                            <p class="text-sm text-slate-500 mb-1">Calon Ketua</p>
+                            <span class="text-slate-300 mx-2">&</span>
+                            <h4 class="font-bold text-xl text-dark inline-block mt-2">Siti Nurhaliza</h4>
+                            <p class="text-sm text-slate-500">Calon Wakil Ketua</p>
+                        </div>
+                        <div class="space-y-3 mt-6">
+                            <button onclick="openVisiMisi('paslon1')" class="w-full py-2.5 px-4 border-2 border-slate-200 text-slate-600 rounded-xl font-semibold hover:border-primary hover:text-primary transition flex justify-center items-center gap-2">
+                                <i class="fa-regular fa-eye"></i> Lihat Visi & Misi
+                            </button>
+                            <button onclick="openVoteConfirm(1, 'Andi Pratama & Siti Nurhaliza')" class="w-full py-2.5 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
+                                <i class="fa-solid fa-check-to-slot"></i> Pilih Paslon 01
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Paslon 2 -->
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-slate-200 overflow-hidden transition-all duration-300 group">
+                    <div class="bg-slate-100 p-6 flex justify-center items-center gap-4 relative">
+                        <div class="absolute top-4 left-4 bg-white/80 backdrop-blur text-dark font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-sm border border-slate-200">
+                            02
+                        </div>
+                        <img src="https://ui-avatars.com/api/?name=Reza+Rahadian&background=f59e0b&color=fff&size=128" alt="Ketua" class="w-24 h-24 rounded-full border-4 border-white shadow-md z-10 -mr-4 group-hover:scale-105 transition">
+                        <img src="https://ui-avatars.com/api/?name=Nadia+Saphira&background=8b5cf6&color=fff&size=128" alt="Wakil" class="w-24 h-24 rounded-full border-4 border-white shadow-md z-0 group-hover:scale-105 transition">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-center mb-4">
+                            <h4 class="font-bold text-xl text-dark">Reza Rahadian</h4>
+                            <p class="text-sm text-slate-500 mb-1">Calon Ketua</p>
+                            <span class="text-slate-300 mx-2">&</span>
+                            <h4 class="font-bold text-xl text-dark inline-block mt-2">Nadia Saphira</h4>
+                            <p class="text-sm text-slate-500">Calon Wakil Ketua</p>
+                        </div>
+                        <div class="space-y-3 mt-6">
+                            <button onclick="openVisiMisi('paslon2')" class="w-full py-2.5 px-4 border-2 border-slate-200 text-slate-600 rounded-xl font-semibold hover:border-primary hover:text-primary transition flex justify-center items-center gap-2">
+                                <i class="fa-regular fa-eye"></i> Lihat Visi & Misi
+                            </button>
+                            <button onclick="openVoteConfirm(2, 'Reza Rahadian & Nadia Saphira')" class="w-full py-2.5 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
+                                <i class="fa-solid fa-check-to-slot"></i> Pilih Paslon 02
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Paslon 3 -->
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-slate-200 overflow-hidden transition-all duration-300 group">
+                    <div class="bg-slate-100 p-6 flex justify-center items-center gap-4 relative">
+                        <div class="absolute top-4 left-4 bg-white/80 backdrop-blur text-dark font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-sm border border-slate-200">
+                            03
+                        </div>
+                        <img src="https://ui-avatars.com/api/?name=Kevin+Sanjaya&background=ef4444&color=fff&size=128" alt="Ketua" class="w-24 h-24 rounded-full border-4 border-white shadow-md z-10 -mr-4 group-hover:scale-105 transition">
+                        <img src="https://ui-avatars.com/api/?name=Putri+Lestari&background=ec4899&color=fff&size=128" alt="Wakil" class="w-24 h-24 rounded-full border-4 border-white shadow-md z-0 group-hover:scale-105 transition">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-center mb-4">
+                            <h4 class="font-bold text-xl text-dark">Kevin Sanjaya</h4>
+                            <p class="text-sm text-slate-500 mb-1">Calon Ketua</p>
+                            <span class="text-slate-300 mx-2">&</span>
+                            <h4 class="font-bold text-xl text-dark inline-block mt-2">Putri Lestari</h4>
+                            <p class="text-sm text-slate-500">Calon Wakil Ketua</p>
+                        </div>
+                        <div class="space-y-3 mt-6">
+                            <button onclick="openVisiMisi('paslon3')" class="w-full py-2.5 px-4 border-2 border-slate-200 text-slate-600 rounded-xl font-semibold hover:border-primary hover:text-primary transition flex justify-center items-center gap-2">
+                                <i class="fa-regular fa-eye"></i> Lihat Visi & Misi
+                            </button>
+                            <button onclick="openVoteConfirm(3, 'Kevin Sanjaya & Putri Lestari')" class="w-full py-2.5 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
+                                <i class="fa-solid fa-check-to-slot"></i> Pilih Paslon 03
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-slate-300 py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2 text-white">
+                <i class="fa-solid fa-check-to-slot text-xl"></i>
+                <span class="font-bold text-lg">E-Voting OSIS</span>
+            </div>
+            <p class="text-sm text-center">
+                &copy; 2026 MPK & Panitia Pemilu OSIS SMA Negeri 1. All rights reserved.
+            </p>
+            <div class="flex gap-4">
+                <a href="#" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-instagram text-xl"></i></a>
+                <a href="#" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-envelope text-xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity flex items-center justify-center p-4">
+        
+        <!-- Visi Misi Modal -->
+        <div id="visiMisiModal" class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto hidden flex-col">
+            <div class="sticky top-0 bg-white border-b border-slate-100 p-5 flex justify-between items-center z-10">
+                <h3 class="text-xl font-bold text-dark flex items-center gap-2">
+                    <i class="fa-solid fa-book-open text-primary"></i> Visi & Misi Paslon
+                </h3>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-dark flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <!-- Content injected via JS -->
+                <div id="visiMisiContent"></div>
+            </div>
+            <div class="border-t border-slate-100 p-5 bg-slate-50 flex justify-end">
+                <button onclick="closeModal()" class="px-5 py-2 bg-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-300 transition">Tutup</button>
+            </div>
+        </div>
+
+        <!-- Konfirmasi Vote Modal -->
+        <div id="voteModal" class="bg-white rounded-2xl shadow-2xl w-full max-w-md hidden flex-col relative overflow-hidden">
+            <!-- Decorative header -->
+            <div class="h-2 w-full bg-primary absolute top-0 left-0"></div>
+            
+            <div class="p-6 pt-8 text-center">
+                <div class="w-20 h-20 bg-blue-50 text-primary rounded-full mx-auto flex items-center justify-center text-3xl mb-4 border-4 border-white shadow-sm">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-dark mb-2">Konfirmasi Pilihan</h3>
+                <p class="text-slate-600 mb-4">Apakah kamu yakin ingin memberikan suara untuk:</p>
+                
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6">
+                    <p class="text-sm text-slate-500 mb-1">Pasangan Calon No. Urut <span id="confirmNo" class="font-bold text-dark"></span></p>
+                    <p id="confirmName" class="text-lg font-bold text-primary"></p>
+                </div>
+
+                <div class="flex items-start text-left bg-amber-50 text-amber-800 p-3 rounded-lg text-xs mb-6">
+                    <i class="fa-solid fa-circle-info mt-0.5 mr-2"></i>
+                    <p>Suara yang sudah disubmit <strong>tidak dapat diubah</strong> kembali. Pastikan pilihanmu sudah tepat.</p>
+                </div>
+
+                <div class="flex gap-3">
+                    <button onclick="closeModal()" class="flex-1 py-3 px-4 border border-slate-300 text-slate-700 rounded-xl font-medium hover:bg-slate-50 transition">
+                        Batal
+                    </button>
+                    <button onclick="submitVote()" class="flex-1 py-3 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md transition flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Ya, Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Toast/Modal -->
+        <div id="successModal" class="bg-white rounded-2xl shadow-2xl w-full max-w-sm hidden flex-col items-center text-center p-8">
+            <div class="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center text-4xl mb-4">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-dark mb-2">Berhasil!</h3>
+            <p class="text-slate-500 mb-6">Terima kasih telah berpartisipasi dalam Pemilu OSIS tahun ini. Suaramu telah tercatat di sistem.</p>
+            <button onclick="finishVote()" class="w-full py-3 px-4 bg-green-500 text-white rounded-xl font-semibold hover:bg-green-600 transition">
+                Selesai
+            </button>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Data Mockup for Visi Misi
+        const dataVisiMisi = {
+            paslon1: {
+                visi: "Menjadikan OSIS SMAN 1 sebagai wadah aspirasi yang inovatif, berkarakter, dan berwawasan lingkungan.",
+                misi: [
+                    "Menyelenggarakan program kerja yang mendukung minat dan bakat siswa.",
+                    "Mengoptimalkan peran ekstrakurikuler dalam membangun karakter.",
+                    "Mengkampanyekan program sekolah hijau (Green School)."
+                ]
+            },
+            paslon2: {
+                visi: "Mewujudkan generasi SMAN 1 yang berakhlak mulia, kreatif, adaptif, dan berprestasi di tingkat nasional.",
+                misi: [
+                    "Meningkatkan kedisiplinan dan nilai-nilai keagamaan melalui kegiatan rutin.",
+                    "Mengadakan perlombaan internal untuk memacu kreativitas siswa.",
+                    "Menjalin kerjasama dengan alumni untuk bimbingan karir."
+                ]
+            },
+            paslon3: {
+                visi: "Membangun lingkungan sekolah yang inklusif, toleran, dan berbasis teknologi digital dalam setiap kegiatan.",
+                misi: [
+                    "Digitalisasi sistem administrasi dan mading OSIS.",
+                    "Mengadakan forum diskusi terbuka antara siswa dan guru (Open Talk).",
+                    "Membuat program 'Bina Desa' sebagai bentuk pengabdian masyarakat."
+                ]
+            }
+        };
+
+        const overlay = document.getElementById('modalOverlay');
+        const visiMisiModal = document.getElementById('visiMisiModal');
+        const voteModal = document.getElementById('voteModal');
+        const successModal = document.getElementById('successModal');
+        
+        let currentVotedId = null;
+
+        function scrollToPanduan() {
+            document.getElementById('panduan').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openModalElement(modalEl) {
+            // Hide all modals first
+            visiMisiModal.classList.add('hidden');
+            voteModal.classList.add('hidden');
+            successModal.classList.add('hidden');
+            
+            // Show overlay and specific modal
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+                overlay.classList.remove('opacity-0');
+                modalEl.classList.remove('hidden');
+                modalEl.classList.add('modal-enter');
+            }, 10);
+        }
+
+        function closeModal() {
+            // Add leave animation to active modal
+            const activeModal = !visiMisiModal.classList.contains('hidden') ? visiMisiModal : 
+                               !voteModal.classList.contains('hidden') ? voteModal : null;
+            
+            if(activeModal) {
+                activeModal.classList.remove('modal-enter');
+                activeModal.classList.add('modal-leave');
+            }
+            
+            overlay.classList.add('opacity-0');
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                if(activeModal) {
+                    activeModal.classList.add('hidden');
+                    activeModal.classList.remove('modal-leave');
+                }
+            }, 200); // match animation duration
+        }
+
+        function openVisiMisi(paslonId) {
+            const data = dataVisiMisi[paslonId];
+            const content = `
+                <div class="mb-6">
+                    <h4 class="text-lg font-bold text-primary mb-2 border-b-2 border-blue-100 pb-2 inline-block">Visi</h4>
+                    <p class="text-slate-700 italic">"${data.visi}"</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold text-primary mb-3 border-b-2 border-blue-100 pb-2 inline-block">Misi</h4>
+                    <ul class="space-y-3">
+                        ${data.misi.map((m, i) => `
+                            <li class="flex items-start gap-3">
+                                <span class="bg-blue-100 text-primary w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">${i+1}</span>
+                                <span class="text-slate-700">${m}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `;
+            document.getElementById('visiMisiContent').innerHTML = content;
+            openModalElement(visiMisiModal);
+        }
+
+        function openVoteConfirm(noUrut, namaPaslon) {
+            currentVotedId = noUrut;
+            document.getElementById('confirmNo').innerText = '0' + noUrut;
+            document.getElementById('confirmName').innerText = namaPaslon;
+            openModalElement(voteModal);
+        }
+
+        function submitVote() {
+            // Simulate API call / processing
+            const btn = voteModal.querySelector('button:last-child');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                
+                // Show success modal
+                voteModal.classList.add('hidden');
+                successModal.classList.remove('hidden');
+                successModal.classList.add('modal-enter');
+            }, 1000);
+        }
+
+        function finishVote() {
+            closeModal();
+            // Update UI to show user has voted
+            document.querySelector('.bg-blue-50.text-primary').innerHTML = '<i class="fa-solid fa-circle-check mr-1 text-green-500"></i> <span class="text-green-700">Sudah Memilih</span>';
+            document.querySelector('.bg-blue-50.text-primary').classList.replace('bg-blue-50', 'bg-green-50');
+            document.querySelector('.bg-green-50').classList.replace('border-blue-100', 'border-green-200');
+            
+            // Disable all vote buttons
+            const voteBtns = document.querySelectorAll('.bg-primary.text-white');
+            voteBtns.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                btn.innerHTML = '<i class="fa-solid fa-lock"></i> Selesai';
+            });
+        }
+    </script>
+</body>
+</html>
+
+
