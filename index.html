@@ -44,40 +44,46 @@
 <body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
 
     <!-- Login Screen -->
-<div id="loginScreen" class="fixed inset-0 z-[60] bg-gradient-to-br from-primary to-secondary flex items-center justify-center p-4">
-    <div class="absolute top-0 right-0 opacity-10 pointer-events-none">
-        <i class="fa-solid fa-fingerprint text-[15rem] -mt-10 -mr-10 text-white"></i>
-    </div>
-
-    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative z-10">
-        
-        <div class="flex flex-col items-center justify-center mb-6 text-center">
-            <div class="w-16 h-16 mb-3 flex-shrink-0 flex items-center justify-center overflow-hidden">
-                <img src="Gambar/logo2.png" alt="" class="w-full h-full object-contain drop-shadow-md">
-            </div>
-            
-            <h2 class="text-2xl font-bold text-gray-800">Masuk ke E-Voting OSIS</h2>
-            <p class="text-sm text-gray-500">Masukkan token pemilu Anda</p>
+     <div id="loginScreen" class="fixed inset-0 z-[60] bg-gradient-to-br from-primary to-secondary flex items-center justify-center p-4">
+        <div class="absolute top-0 right-0 opacity-10 pointer-events-none">
+            <i class="fa-solid fa-fingerprint text-[15rem] -mt-10 -mr-10 text-white"></i>
         </div>
 
-        <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
-            <div>
-                <label for="tokenInput" class="block text-sm font-medium text-gray-700 mb-1">Token Pemilih</label>
-                <input type="text" id="tokenInput" required placeholder="Contoh: TOK-12345" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition uppercase tracking-wider font-mono text-center text-lg">
+        <div class="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-2xl p-8">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    <img src="Gambar/logo.png" alt="Logo OSIS" class="w-full h-full object-contain drop-shadow-sm">
+                </div>
+                
+                <h1 class="text-xl font-bold text-dark">Masuk ke E-Voting OSIS</h1>
+                <p class="text-sm text-slate-500 mt-1">SMAN 3 Surakarta - Pemilihan OSIS 2026/2027</p>
             </div>
 
-            <div id="loginError" class="hidden p-3 bg-red-50 text-red-600 rounded-lg text-sm text-center font-medium">
-                Token tidak valid atau sudah digunakan!
-            </div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <label for="tokenInput" class="block text-sm font-medium text-slate-700 mb-2">Token</label>
+                <input
+                    type="text"
+                    id="tokenInput"
+                    autocomplete="off"
+                    placeholder="Masukkan token kamu"
+                    class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition text-center tracking-wide font-medium"
+                >
+                <p id="loginError" class="hidden text-sm text-red-600 mt-2 flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-exclamation"></i> <span>Token tidak ditemukan. Periksa kembali token kamu.</span>
+                </p>
 
-            <button type="submit" class="w-full bg-primary hover:bg-blue-800 text-white font-semibold py-3 px-4 rounded-xl transition duration-200 shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2">
-                <span>Lanjut Memilih</span>
-                <i class="fa-solid fa-arrow-right"></i>
-            </button>
-        </form>
+                <button type="submit" id="loginSubmitBtn" class="w-full mt-5 py-3 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Masuk
+                </button>
+            </form>
 
+            <p class="text-xs text-slate-400 text-center mt-5">
+                Token bersifat rahasia dan hanya berlaku untuk satu kali proses voting.
+            </p>
+        </div>
     </div>
-</div>
+
+
 
 
     <!-- App Content (hidden until login) -->
