@@ -39,6 +39,46 @@
         .modal-leave { animation: fadeOut 0.2s ease-in forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         @keyframes fadeOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.95); } }
+
+        /* Login card entrance */
+        .login-card-enter { animation: loginPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        @keyframes loginPop { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* Candidate card staggered entrance */
+        .card-enter { animation: cardFadeUp 0.5s ease-out both; }
+        @keyframes cardFadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Success checkmark pop */
+        .check-pop { animation: checkPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+        @keyframes checkPop { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+
+        /* App content fade-in after login */
+        .app-fade-in { animation: appFadeIn 0.4s ease-out both; }
+        @keyframes appFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Navbar gentle slide-down entrance */
+        .nav-enter { animation: navSlideDown 0.45s ease-out both; }
+        @keyframes navSlideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Section heading + status badge entrance */
+        .heading-enter { animation: headingFadeIn 0.5s ease-out 0.1s both; }
+        @keyframes headingFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Gentle shake for invalid token input */
+        .shake { animation: shake 0.4s ease-in-out; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        /* Foto kandidat fade-in halus saat selesai dimuat */
+        .photo-fade { opacity: 0; transition: opacity 0.4s ease-out; }
+        .photo-fade.loaded { opacity: 1; }
+
+        /* Navbar dapat shadow lebih dalam saat halaman di-scroll */
+        #appNavbar { transition: box-shadow 0.25s ease; }
+        #appNavbar.scrolled { box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.08); }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
@@ -49,7 +89,7 @@
             <i class="fa-solid fa-fingerprint text-[15rem] -mt-10 -mr-10 text-white"></i>
         </div>
 
-        <div class="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-2xl p-8">
+        <div class="login-card-enter relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-2xl p-8">
             <div class="text-center mb-6">
                 <div class="w-72 h-32 mx-auto mb-4 flex items-center justify-center flex-shrink-0 overflow-hidden">
                     <img src="Gambar/logo3.png" alt="Logo OSIS" class="w-full h-full object-contain drop-shadow-sm">
@@ -72,7 +112,7 @@
                     <i class="fa-solid fa-circle-exclamation"></i> <span>Token tidak ditemukan. Periksa kembali token kamu.</span>
                 </p>
 
-                <button type="submit" id="loginSubmitBtn" class="w-full mt-5 py-3 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
+                <button type="submit" id="loginSubmitBtn" class="w-full mt-5 py-3 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md hover:shadow-lg active:scale-[0.98] transition flex justify-center items-center gap-2">
                     <i class="fa-solid fa-right-to-bracket"></i> Masuk
                 </button>
             </form>
@@ -87,10 +127,10 @@
 
 
     <!-- App Content (hidden until login) -->
-    <div id="appWrapper" class="hidden flex flex-col min-h-screen">
+    <div id="appWrapper" class="app-fade-in hidden flex flex-col min-h-screen">
 
     <!-- Navbar -->
-<nav class="bg-white shadow-sm sticky top-0 z-40">
+<nav id="appNavbar" class="nav-enter bg-white shadow-sm sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
             
@@ -109,7 +149,7 @@
                     <p id="profileUsername" class="text-sm font-semibold">smaga0001</p>
                     <p id="profileToken" class="text-xs text-slate-500">mjpm0o</p>
                 </div>
-                <div class="w-9 h-9 rounded-full bg-slate-200 border-2 border-primary overflow-hidden flex items-center justify-center text-slate-500">
+                <div class="w-9 h-9 rounded-full bg-slate-200 border-2 border-primary overflow-hidden flex items-center justify-center text-slate-500 hover:scale-110 transition-transform duration-200">
                     <i class="fa-solid fa-user text-lg"></i>
                 </div>
             </div>
@@ -123,29 +163,27 @@
 
         <!-- Kandidat Section -->
         <section id="kandidat" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-10">
-            <div class="flex justify-between items-end mb-8">
+            <div class="heading-enter flex items-center gap-3 mb-8">
+                <div class="w-1 h-11 bg-primary rounded-full"></div>
                 <div>
-                    <h3 class="text-3xl font-bold text-dark">Daftar Kandidat</h3>
-                    <p class="text-slate-500 mt-2">Calon Ketua & Wakil Ketua OSIS 2026/2027</p>
-                </div>
-                <div class="hidden sm:block text-sm font-medium px-4 py-2 bg-blue-50 text-primary rounded-lg border border-blue-100">
-                    <i class="fa-solid fa-user-check mr-1"></i> Status: Belum Memilih
+                    <h3 class="text-3xl font-bold text-dark leading-tight">Daftar Kandidat</h3>
+                    <p class="text-slate-500">Calon Ketua & Wakil Ketua OSIS 2026/2027</p>
                 </div>
             </div>
 
             <!-- Kandidat Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-slate-200 overflow-hidden transition-all duration-300 group">
+                <div class="card-enter bg-white rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 border border-slate-200 hover:border-primary/30 overflow-hidden transition-all duration-300 group" style="animation-delay: 0ms">
                     <div class="bg-slate-100 p-3 pt-10 flex justify-center items-stretch gap-2 relative">
-                        <div class="absolute top-3 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur text-dark font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-sm border border-slate-200 z-10">
+                        <div class="absolute top-3 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur text-dark font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-sm border border-slate-200 z-10 transition-transform duration-300 group-hover:scale-110">
                             01
                         </div>
                         <div class="flex-1 aspect-[3/5] rounded-xl border border-slate-200 bg-white overflow-hidden">
-                            <img src="Gambar/Tachyon.jpeg" alt="Foto Calon Ketua 1" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
+                            <img src="Gambar/Tachyon.jpeg" alt="Foto Calon Ketua 1" loading="lazy" class="photo-fade w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300" onload="this.classList.add('loaded')">
                         </div>
                         <div class="flex-1 aspect-[3/5] rounded-xl border border-slate-200 bg-white overflow-hidden">
-                            <img src="Gambar/cafe.jpeg" alt="Foto Calon Wakil Ketua 1" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
+                            <img src="Gambar/cafe.jpeg" alt="Foto Calon Wakil Ketua 1" loading="lazy" class="photo-fade w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300" onload="this.classList.add('loaded')">
                         </div>
                     </div>
                     <div class="p-6">
@@ -156,23 +194,23 @@
                             <p class="text-sm text-slate-500">Calon Wakil Ketua</p>
                         </div>
                         <div class="space-y-3 mt-6">
-                            <button onclick="openVoteConfirm(1, 'Ketua 1 & Wakil Ketua 1')" class="w-full py-2.5 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
+                            <button onclick="openVoteConfirm(1, 'Ketua 1 & Wakil Ketua 1')" class="w-full py-2.5 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md hover:shadow-lg active:scale-[0.98] transition flex justify-center items-center gap-2">
                                 <i class="fa-solid fa-check-to-slot"></i> Pilih Paslon 01
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-slate-200 overflow-hidden transition-all duration-300 group">
+                <div class="card-enter bg-white rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 border border-slate-200 hover:border-primary/30 overflow-hidden transition-all duration-300 group" style="animation-delay: 100ms">
                     <div class="bg-slate-100 p-3 pt-10 flex justify-center items-stretch gap-2 relative">
-                        <div class="absolute top-3 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur text-dark font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-sm border border-slate-200 z-10">
+                        <div class="absolute top-3 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur text-dark font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-sm border border-slate-200 z-10 transition-transform duration-300 group-hover:scale-110">
                             02
                         </div>
                         <div class="flex-1 aspect-[3/5] rounded-xl border border-slate-200 bg-white overflow-hidden">
-                            <img src="Gambar/Paslon02.jpeg" alt="Foto Calon Ketua 2" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
+                            <img src="Gambar/Paslon02.jpeg" alt="Foto Calon Ketua 2" loading="lazy" class="photo-fade w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300" onload="this.classList.add('loaded')">
                         </div>
                         <div class="flex-1 aspect-[3/5] rounded-xl border border-slate-200 bg-white overflow-hidden">
-                            <img src="Gambar/Paslon03.png" alt="Foto Calon Wakil Ketua 2" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
+                            <img src="Gambar/Paslon03.png" alt="Foto Calon Wakil Ketua 2" loading="lazy" class="photo-fade w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300" onload="this.classList.add('loaded')">
                         </div>
                     </div>
                     <div class="p-6">
@@ -183,23 +221,23 @@
                             <p class="text-sm text-slate-500">Calon Wakil Ketua</p>
                         </div>
                         <div class="space-y-3 mt-6">
-                            <button onclick="openVoteConfirm(2, 'Ketua 2 & Wakil Ketua 2')" class="w-full py-2.5 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
+                            <button onclick="openVoteConfirm(2, 'Ketua 2 & Wakil Ketua 2')" class="w-full py-2.5 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md hover:shadow-lg active:scale-[0.98] transition flex justify-center items-center gap-2">
                                 <i class="fa-solid fa-check-to-slot"></i> Pilih Paslon 02
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-slate-200 overflow-hidden transition-all duration-300 group">
+                <div class="card-enter bg-white rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 border border-slate-200 hover:border-primary/30 overflow-hidden transition-all duration-300 group" style="animation-delay: 200ms">
                     <div class="bg-slate-100 p-3 pt-10 flex justify-center items-stretch gap-2 relative">
-                        <div class="absolute top-3 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur text-dark font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-sm border border-slate-200 z-10">
+                        <div class="absolute top-3 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur text-dark font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-sm border border-slate-200 z-10 transition-transform duration-300 group-hover:scale-110">
                             03
                         </div>
                         <div class="flex-1 aspect-[3/5] rounded-xl border border-slate-200 bg-white overflow-hidden">
-                            <img src="Gambar/Paslon01.jpg" alt="Foto Calon Ketua 3" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
+                            <img src="Gambar/Paslon01.jpg" alt="Foto Calon Ketua 3" loading="lazy" class="photo-fade w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300" onload="this.classList.add('loaded')">
                         </div>
                         <div class="flex-1 aspect-[3/5] rounded-xl border border-slate-200 bg-white overflow-hidden">
-                            <img src="Gambar/Amiya.png" alt="Foto Calon Wakil Ketua 3" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
+                            <img src="Gambar/Amiya.png" alt="Foto Calon Wakil Ketua 3" loading="lazy" class="photo-fade w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300" onload="this.classList.add('loaded')">
                         </div>
                     </div>
                     <div class="p-6">
@@ -210,7 +248,7 @@
                             <p class="text-sm text-slate-500">Calon Wakil Ketua</p>
                         </div>
                         <div class="space-y-3 mt-6">
-                            <button onclick="openVoteConfirm(3, 'Ketua 3 & Wakil Ketua 3')" class="w-full py-2.5 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
+                            <button onclick="openVoteConfirm(3, 'Ketua 3 & Wakil Ketua 3')" class="w-full py-2.5 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md hover:shadow-lg active:scale-[0.98] transition flex justify-center items-center gap-2">
                                 <i class="fa-solid fa-check-to-slot"></i> Pilih Paslon 03
                             </button>
                         </div>
@@ -222,17 +260,10 @@
     </main>
 
     <!-- Footer -->
-   <footer class="bg-dark text-slate-300 py-8 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center gap-3 text-center">
-        <div class="flex items-center gap-2 text-white">
-            <i class="fa-solid fa-check-to-slot text-xl"></i>
-            <span class="font-bold text-lg">E-Voting OSIS</span>
-        </div>
-
-        <p class="text-sm text-slate-400 leading-relaxed">
-            &copy; 2026 MPK & ADMINISTRATOR PROGRAMMING OSIS SMAN 3 Surakarta.<br> 
-            All rights reserved.<br>
-            <span class="text-xs text-rose-400 mt-1 inline-block">❤ Agnes Tachyon my Beloved ❤</span>
+   <footer class="bg-dark text-slate-300 py-3 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center text-center">
+        <p class="text-xs text-slate-400">
+            &copy; 2026 MPK & ADMINISTRATOR PROGRAMMING OSIS SMAN 3 Surakarta. All rights reserved.
         </p>
     </div>
 </footer>
@@ -245,25 +276,6 @@
     <!-- Modal Overlay -->
     <div id="modalOverlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity flex items-center justify-center p-4">
         
-        <!-- Visi Misi Modal -->
-        <div id="visiMisiModal" class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto hidden flex-col">
-            <div class="sticky top-0 bg-white border-b border-slate-100 p-5 flex justify-between items-center z-10">
-                <h3 class="text-xl font-bold text-dark flex items-center gap-2">
-                    <i class="fa-solid fa-book-open text-primary"></i> Visi & Misi Paslon
-                </h3>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-dark flex items-center justify-center transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="p-6">
-                <!-- Content injected via JS -->
-                <div id="visiMisiContent"></div>
-            </div>
-            <div class="border-t border-slate-100 p-5 bg-slate-50 flex justify-end">
-                <button onclick="closeModal()" class="px-5 py-2 bg-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-300 transition">Tutup</button>
-            </div>
-        </div>
-
         <!-- Konfirmasi Vote Modal -->
         <div id="voteModal" class="bg-white rounded-2xl shadow-2xl w-full max-w-md hidden flex-col relative overflow-hidden">
             <!-- Decorative header -->
@@ -291,10 +303,10 @@
                 </p>
 
                 <div class="flex gap-3">
-                    <button onclick="closeModal()" class="flex-1 py-3 px-4 border border-slate-300 text-slate-700 rounded-xl font-medium hover:bg-slate-50 transition">
+                    <button onclick="closeModal()" class="flex-1 py-3 px-4 border border-slate-300 text-slate-700 rounded-xl font-medium hover:bg-slate-50 active:scale-[0.98] transition">
                         Batal
                     </button>
-                    <button onclick="submitVote()" class="flex-1 py-3 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md transition flex justify-center items-center gap-2">
+                    <button onclick="submitVote()" class="flex-1 py-3 px-4 bg-primary text-white rounded-xl font-semibold hover:bg-blue-800 shadow-md active:scale-[0.98] transition flex justify-center items-center gap-2">
                         <i class="fa-solid fa-paper-plane"></i> Ya, Submit
                     </button>
                 </div>
@@ -303,12 +315,12 @@
 
         <!-- Success Toast/Modal -->
         <div id="successModal" class="bg-white rounded-2xl shadow-2xl w-full max-w-sm hidden flex-col items-center text-center p-8">
-            <div class="w-20 h-20 mx-auto bg-green-100 text-green-500 rounded-full flex items-center justify-center text-4xl mb-4">
+            <div class="check-pop w-20 h-20 mx-auto bg-green-100 text-green-500 rounded-full flex items-center justify-center text-4xl mb-4">
                 <i class="fa-solid fa-check"></i>
             </div>
             <h3 class="text-2xl font-bold text-dark mb-2">Berhasil!</h3>
             <p class="text-slate-500 mb-6">Terima kasih telah berpartisipasi dalam Pemilu OSIS tahun ini. Suaramu telah tercatat di sistem.</p>
-            <button onclick="finishVote()" class="w-full py-3 px-4 bg-green-500 text-white rounded-xl font-semibold hover:bg-green-600 transition">
+            <button onclick="finishVote()" class="w-full py-3 px-4 bg-green-500 text-white rounded-xl font-semibold hover:bg-green-600 active:scale-[0.98] transition">
                 Selesai
             </button>
         </div>
@@ -328,6 +340,13 @@
 
         let currentUsername = null;
         let currentToken = null;
+
+        // Navbar dapat shadow lebih dalam saat halaman di-scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('appNavbar');
+            if (!nav) return;
+            nav.classList.toggle('scrolled', window.scrollY > 8);
+        });
 
         async function handleLogin(event) {
             event.preventDefault();
@@ -383,6 +402,9 @@
             if (errorText) errorText.innerText = message;
             errorEl.classList.remove('hidden');
             input.classList.add('border-red-400', 'ring-2', 'ring-red-100');
+            input.classList.remove('shake');
+            void input.offsetWidth; // restart animation kalau errornya berturut-turut
+            input.classList.add('shake');
             input.focus();
         }
 
@@ -391,49 +413,15 @@
             document.getElementById('tokenInput').classList.remove('border-red-400', 'ring-2', 'ring-red-100');
         }
 
-        // Data Mockup for Visi Misi
-        const dataVisiMisi = {
-            paslon1: {
-                visi: "Menjadikan OSIS SMAN 3 Surakarta sebagai wadah aspirasi yang inovatif, berkarakter, dan berwawasan lingkungan.",
-                misi: [
-                    "Menyelenggarakan program kerja yang mendukung minat dan bakat siswa.",
-                    "Mengoptimalkan peran ekstrakurikuler dalam membangun karakter.",
-                    "Mengkampanyekan program sekolah hijau (Green School)."
-                ]
-            },
-            paslon2: {
-                visi: "Mewujudkan generasi SMAN 3 Surakarta yang berakhlak mulia, kreatif, adaptif, dan berprestasi di tingkat nasional.",
-                misi: [
-                    "Meningkatkan kedisiplinan dan nilai-nilai keagamaan melalui kegiatan rutin.",
-                    "Mengadakan perlombaan internal untuk memacu kreativitas siswa.",
-                    "Menjalin kerjasama dengan alumni untuk bimbingan karir."
-                ]
-            },
-            paslon3: {
-                visi: "Membangun lingkungan sekolah yang inklusif, toleran, dan berbasis teknologi digital dalam setiap kegiatan.",
-                misi: [
-                    "Digitalisasi sistem administrasi dan mading OSIS.",
-                    "Mengadakan forum diskusi terbuka antara siswa dan guru (Open Talk).",
-                    "Membuat program 'Bina Desa' sebagai bentuk pengabdian masyarakat."
-                ]
-            }
-        };
-
         const overlay = document.getElementById('modalOverlay');
-        const visiMisiModal = document.getElementById('visiMisiModal');
         const voteModal = document.getElementById('voteModal');
         const successModal = document.getElementById('successModal');
-        
+
         let currentVotedId = null;
         let currentVotedName = null;
 
-        function scrollToPanduan() {
-            document.getElementById('panduan').scrollIntoView({ behavior: 'smooth' });
-        }
-
         function openModalElement(modalEl) {
             // Hide all modals first
-            visiMisiModal.classList.add('hidden');
             voteModal.classList.add('hidden');
             successModal.classList.add('hidden');
             
@@ -448,8 +436,7 @@
 
         function closeModal() {
             // Add leave animation to active modal
-            const activeModal = !visiMisiModal.classList.contains('hidden') ? visiMisiModal : 
-                               !voteModal.classList.contains('hidden') ? voteModal : null;
+            const activeModal = !voteModal.classList.contains('hidden') ? voteModal : null;
             
             if(activeModal) {
                 activeModal.classList.remove('modal-enter');
@@ -464,29 +451,6 @@
                     activeModal.classList.remove('modal-leave');
                 }
             }, 200); // match animation duration
-        }
-
-        function openVisiMisi(paslonId) {
-            const data = dataVisiMisi[paslonId];
-            const content = `
-                <div class="mb-6">
-                    <h4 class="text-lg font-bold text-primary mb-2 border-b-2 border-blue-100 pb-2 inline-block">Visi</h4>
-                    <p class="text-slate-700 italic">"${data.visi}"</p>
-                </div>
-                <div>
-                    <h4 class="text-lg font-bold text-primary mb-3 border-b-2 border-blue-100 pb-2 inline-block">Misi</h4>
-                    <ul class="space-y-3">
-                        ${data.misi.map((m, i) => `
-                            <li class="flex items-start gap-3">
-                                <span class="bg-blue-100 text-primary w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">${i+1}</span>
-                                <span class="text-slate-700">${m}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-            `;
-            document.getElementById('visiMisiContent').innerHTML = content;
-            openModalElement(visiMisiModal);
         }
 
         function openVoteConfirm(noUrut, namaPaslon) {
