@@ -1,4 +1,4 @@
-<!-- Mulai Plugin Flappy Bird V2 -->
+<!-- Mulai Plugin Flappy Bird 2 -->
 <script>
 (function() {
     // --- 1. SETUP CSS UNTUK ANIMASI UI ---
